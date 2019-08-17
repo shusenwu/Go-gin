@@ -18,8 +18,14 @@ func PostHomePage(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
+	firstname := c.DefaultQuery("firstname", "Guest")
+	lastname := c.Query("lastname") // shortcut for c.Request.URL.Query().Get("lastname")
+
 	c.JSON(200, gin.H{
-		"message": string(value),
+		"message":   string(value),
+		"firstname": firstname,
+		"lastname":  lastname,
 	})
 }
 
@@ -48,5 +54,5 @@ func main() {
 	r.POST("/", PostHomePage)
 	r.GET("/query", QueryString)              // query? name=xxx&age=xxx
 	r.GET("/path/:name/:age", PathParameters) // path/name/age
-	r.Run()
+	r.Run(":8080")
 }
